@@ -2,8 +2,11 @@ import React from "react";
 import { Container } from "./styles/Shares";
 import { GlobalCss } from "./styles/GlobalCSS";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Nav from "./components/Nav";
 import { ThemeProvider } from "styled-components";
+import Home from "./components/Home";
+import Login from "./components/Login";
+import LoginContextProvider from "./store/LoginContentApi";
+import RouteGuard from "./helpers/RouteGuard";
 
 const theme = {
   colors: {
@@ -18,9 +21,16 @@ function App() {
         <GlobalCss />
         <Container>
           <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Nav />} />
-            </Routes>
+            <LoginContextProvider>
+              <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/home" element={
+                  <RouteGuard>
+                    <Home />
+                  </RouteGuard>
+                } />
+              </Routes>
+            </LoginContextProvider>
           </BrowserRouter>
         </Container>
       </ThemeProvider>

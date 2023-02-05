@@ -5,3 +5,15 @@ export const Container = styled.div`
     margin: 0 auto;
     
 `
+
+export const Button = styled.button`
+    margin-top:20px;
+    padding:10px 10px;
+    border-radius:3px;
+    border:none;
+    background-color:hotpink;
+    color:white;
+    &:hover{
+        background-color:indigo;
+    }
+`
