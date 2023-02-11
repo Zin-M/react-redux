@@ -1,17 +1,39 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { bindActionCreators } from "redux";
-import { actionCreators } from "./store/actionCreators";
-
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { add } from "./store/actions/productAction"
+import Products from "./components/Products";
 function App() {
-  const logged = useSelector(state => state.loggedIn)
+  const products = useSelector(state => state.products)
   const dispatch = useDispatch()
-  const { login, logout } = bindActionCreators(actionCreators, dispatch)
+
+  useEffect(() => {
+    fetchData();
+
+  }, [])
+
+  const fetchData = async () => {
+    let response = await fetch('https://api.escuelajs.co/api/v1/products?offset=0&limit=12');
+    let data = await response.json();
+    // data.map(val => dispatch(add({
+    //   id: val.id,
+    //   title: val.title,
+    //   img: val.images[0]
+    // })))
+    dispatch(add(data))
+  }
+
+  console.log(products)
   return (
     <>
-      <h1>{logged ? "Member" : "Guest"}</h1>
-      <button onClick={() => login(true)}>Login </button>
-      <button onClick={() => logout(false)}>Logout</button>
+      <div className="container">
+        <div className="row">
+          {
+            products.map(product => {
+              return <Products key={product.id} product={product} />
+            })
+          }
+        </div>
+      </div>
     </>
   );
 }
